@@ -6,8 +6,6 @@
 #### Development Build Status
 [![Build Status](https://travis-ci.org/2acoin/node8-multi-hashing.svg?branch=development)](https://travis-ci.org/2acoin/node8-multi-hashing) [![Build status](https://ci.appveyor.com/api/projects/status/github/2acoin/node8-multi-hashing?branch=development&svg=true)](https://ci.appveyor.com/project/2acoin/node8-multi-hashing/branch/development)
 
-[![NPM](https://nodei.co/npm/2acoin-multi-hashing.png?downloads=true&stars=true)](https://nodei.co/npm/2acoin-multi-hashing/)
-
 # 2ACoin-multi-hashing
 
 Cryptocurrency hashing functions for NodeJS
@@ -44,13 +42,13 @@ Cryptocurrency hashing functions for NodeJS
 ```bash
 sudo apt-get nodejs nodejs-dev node-gyp npm
 sudo ln -s /usr/bin/nodejs /usr/bin/node
-npm install turtlecoin-multi-hashing
+npm install 2acoin-multi-hashing
 ```
 
 So far this native NodeJS addon can do the following hashing algorithms.
 
 ```javascript
-var multiHashing = require('turtlecoin-multi-hashing')
+var multiHashing = require('2acoin-multi-hashing')
 var Buffer = require('safe-buffer').Buffer
 
 var algorithms = ['quark', 'x11', 'scrypt', 'scryptn', 'scryptjane', 'keccak', 'bcrypt', 'skein', 'blake']
@@ -89,3 +87,4 @@ console.log(hashedData)
 * [codebling](https://github.com/codebling) CodeBling
 * [Monero](https://github.com/monero-project/monero) The Monero Project
 * [TurtleCoin](https://github.com/turtlecoin) TurtleCoin Developers
+* [2ACoin](https://github.com/2acoin) 2ACoin Developers

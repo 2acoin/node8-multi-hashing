@@ -1,5 +1,5 @@
 {
-    "name": "turtlecoin-multi-hashing",
+    "name": "2acoin-multi-hashing",
     "version": "0.0.18",
     "main": "multihashing",
     "gypfile": true,
@@ -8,12 +8,13 @@
         "email": "zone117x@gmail.com"
     },
     "contributors": [
-        "Brandon Lehmann <brandonlehmann@gmail.com>"
+        "Brandon Lehmann <brandonlehmann@gmail.com>",
+        "2ACoin Developers <info@2acoin.org>"
     ],
     "license": "GPL-3.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/turtlecoin/node8-multi-hashing.git"
+        "url": "https://github.com/2acoin/node8-multi-hashing.git"
     },
     "scripts": {
         "test": "node-gyp clean && node-gyp configure && node-gyp build && node tests/cryptonight-tests.js"
@@ -36,7 +37,7 @@
         "shavite",
         "fugue",
         "sha1",
-        "turtlecoin",
+        "2acoin",
         "cryptonight"
     ]
 }
