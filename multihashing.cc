@@ -14,6 +14,8 @@ extern "C" {
     #include "cryptonight_lite.h"
     #include "cryptonight_turtle.h"
     #include "cryptonight_turtle_lite.h"
+    #include "cryptonight_armor.h"
+    #include "cryptonight_armor_lite.h"
     #include "cryptonight_soft_shell.h"
     #include "fresh.h"
     #include "fugue.h"
@@ -432,6 +434,82 @@ DECLARE_FUNC(cryptonightturtlelite) {
     SET_BUFFER_RETURN(output, 32);
 }
 
+DECLARE_FUNC(cryptonightarmor) {
+    DECLARE_SCOPE;
+
+    bool fast = false;
+    uint32_t cn_variant = 0;
+
+    if (args.Length() < 1)
+        RETURN_EXCEPT("You must provide one argument.");
+
+    if (args.Length() >= 2) {
+        if(args[1]->IsBoolean())
+            fast = args[1]->BooleanValue();
+        else if(args[1]->IsUint32())
+            cn_variant = args[1]->Uint32Value();
+        else
+            RETURN_EXCEPT("Argument 2 should be a boolean or uint32_t");
+    }
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        RETURN_EXCEPT("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    if(fast)
+        cryptonightarmor_fast_hash(input, output, input_len);
+    else {
+        if (cn_variant > 0 && input_len < 43)
+            RETURN_EXCEPT("Argument must be 43 bytes for monero variant 1+");
+        cryptonightarmor_hash(input, output, input_len, cn_variant);
+    }
+    SET_BUFFER_RETURN(output, 32);
+}
+
+DECLARE_FUNC(cryptonightarmorlite) {
+    DECLARE_SCOPE;
+
+    bool fast = false;
+    uint32_t cn_variant = 0;
+
+    if (args.Length() < 1)
+        RETURN_EXCEPT("You must provide one argument.");
+
+    if (args.Length() >= 2) {
+        if(args[1]->IsBoolean())
+            fast = args[1]->BooleanValue();
+        else if(args[1]->IsUint32())
+            cn_variant = args[1]->Uint32Value();
+        else
+            RETURN_EXCEPT("Argument 2 should be a boolean or uint32_t");
+    }
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        RETURN_EXCEPT("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    if(fast)
+        cryptonightarmorlite_fast_hash(input, output, input_len);
+    else {
+        if (cn_variant > 0 && input_len < 43)
+            RETURN_EXCEPT("Argument must be 43 bytes for monero variant 1+");
+        cryptonightarmorlite_hash(input, output, input_len, cn_variant);
+    }
+    SET_BUFFER_RETURN(output, 32);
+}
+
 DECLARE_FUNC(cryptonightfast) {
     DECLARE_SCOPE;
 
@@ -607,6 +685,10 @@ DECLARE_INIT(init) {
     NODE_SET_METHOD(exports, "cryptonight-turtle", cryptonightturtle);
     NODE_SET_METHOD(exports, "cryptonightturtlelite", cryptonightturtlelite);
     NODE_SET_METHOD(exports, "cryptonight-turtle-lite", cryptonightturtlelite);
+    NODE_SET_METHOD(exports, "cryptonightarmor", cryptonightarmor);
+    NODE_SET_METHOD(exports, "cryptonight-armor", cryptonightarmor);
+    NODE_SET_METHOD(exports, "cryptonightarmorlite", cryptonightarmorlite);
+    NODE_SET_METHOD(exports, "cryptonight-armor-lite", cryptonightarmorlite);
     NODE_SET_METHOD(exports, "cryptonightsoftshell", cryptonightsoftshell);
     NODE_SET_METHOD(exports, "cryptonight-soft-shell", cryptonightsoftshell);
     NODE_SET_METHOD(exports, "fresh", fresh);
