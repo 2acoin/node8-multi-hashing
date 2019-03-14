@@ -15,6 +15,8 @@
                 "cryptonight_lite.c",
                 "cryptonight_turtle.c",
                 "cryptonight_turtle_lite.c",
+                "cryptonight_armor.c",
+                "cryptonight_armor_lite.c",               
                 "cryptonight_soft_shell.c",
                 "fresh.c",
                 "fugue.c",
