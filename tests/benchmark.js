@@ -2,9 +2,10 @@ const Buffer = require('safe-buffer').Buffer
 const multiHashing = require('../build/Release/multihashing')
 
 const algoTests = [
-  'cryptonight',
-  'cryptonight-lite',
-  'cryptonight-turtle-lite'
+  ['cryptonight','cryptonight          '],
+  ['cryptonight-lite','cryptonight-lite     '],
+  ['cryptonight-armor','cryptonight-armor    '],
+  ['cryptonight-armor-lite','crptonite-armor-lite ']
 ]
 
 const variants = [
@@ -25,9 +26,16 @@ function runBenchmark (algo, variant, iterations) {
   return Math.floor(iterations / time)
 }
 
+console.log(' ')
+console.log('Algo Testing        Variant   Hashrate H/s')
+console.log('------------        -------   ------------')
+console.log(' ')
+
 for (var i = 0; i < algoTests.length; i++) {
   for (var j = 0; j < variants.length; j++) {
-    var hashrate = runBenchmark(algoTests[i], variants[j])
-    console.log(algoTests[i] + ' v' + variants[j] + ': ' + hashrate + ' H/s')
+    var hashrate = runBenchmark(algoTests[i][0], variants[j])
+    console.log(algoTests[i][1] + ' v' + variants[j] + '        ' + hashrate + ' H/s')
   }
 }
+console.log(' ')
+console.log(' ')
