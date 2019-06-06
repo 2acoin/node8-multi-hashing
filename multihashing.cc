@@ -2,8 +2,10 @@
 #include <node_buffer.h>
 #include <v8.h>
 #include <stdint.h>
+#include <cstring>
 
 extern "C" {
+    #include "argon2.h"
     #include "bcrypt.h"
     #include "blake.h"
     #include "c11.h"
@@ -615,6 +617,7 @@ DECLARE_FUNC(cryptonightsoftshell) {
     }
 
     uint32_t scratchpad = CN_SOFT_SHELL_MEMORY + (static_cast<uint32_t>(offset) * CN_SOFT_SHELL_PAD_MULTIPLIER);
+	scratchpad = (static_cast<uint64_t>(scratchpad / 128)) * 128;
     uint32_t iterations = CN_SOFT_SHELL_ITER + (static_cast<uint32_t>(offset) * CN_SOFT_SHELL_ITER_MULTIPLIER);
 
     char * input = Buffer::Data(target);
@@ -629,6 +632,37 @@ DECLARE_FUNC(cryptonightsoftshell) {
             RETURN_EXCEPT("Argument must be 43 bytes for monero variant 1+");
         cryptonight_soft_shell_hash(input, output, input_len, cn_variant, scratchpad, iterations);
     }
+    SET_BUFFER_RETURN(output, 32);
+}
+
+DECLARE_FUNC(chukwa) {
+    DECLARE_SCOPE;
+
+    // Chukwa Definitions
+    const uint32_t hashlen = 32; // The length of the resulting hash in bytes
+    const uint32_t saltlen = 16; // The length of our salt in bytes
+    const uint32_t threads = 1; // How many threads to use at once
+    const uint32_t iters = 3; // How many iterations we perform as part of our slow-hash
+    const uint32_t memory = 512; // This value is in KiB (0.5MB)
+
+    if (args.Length() < 1)
+        RETURN_EXCEPT("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        RETURN_EXCEPT("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    uint8_t salt[saltlen];
+    std::memcpy(salt, input, sizeof(salt));
+
+    argon2id_hash_raw(iters, memory, threads, input, input_len, salt, saltlen, output, hashlen);
+
     SET_BUFFER_RETURN(output, 32);
 }
 
@@ -691,6 +725,7 @@ DECLARE_INIT(init) {
     NODE_SET_METHOD(exports, "cryptonight-armor-lite", cryptonightarmorlite);
     NODE_SET_METHOD(exports, "cryptonightsoftshell", cryptonightsoftshell);
     NODE_SET_METHOD(exports, "cryptonight-soft-shell", cryptonightsoftshell);
+    NODE_SET_METHOD(exports, "chukwa", chukwa);
     NODE_SET_METHOD(exports, "fresh", fresh);
     NODE_SET_METHOD(exports, "fugue", fugue);
     NODE_SET_METHOD(exports, "groestl", groestl);

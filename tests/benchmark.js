@@ -39,3 +39,5 @@ for (var i = 0; i < algoTests.length; i++) {
 }
 console.log(' ')
 console.log(' ')
+const chukwaHashrate = runBenchmark('chukwa')
+console.log('chukwa: %s H/s', chukwaHashrate)
