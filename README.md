@@ -14,26 +14,27 @@ Cryptocurrency hashing functions for NodeJS
 
 ## Algorithms
 
-* quark
-* x11
-* x13
-* nist5
-* scrypt
-* scryptn
-* scryptjane
-* keccak
-* bcrypt
-* skein
-* groestl
+* argon2/chukwa
 * blake
-* fugue
-* qubit
-* hefty1
-* shavite3
+* boolberry
+* bcrypt
 * cryptonight
 * cryptonight-fast
 * cryptonight-lite
-* boolberry
+* fugue
+* groestl
+* hefty1
+* keccak
+* nist5
+* qubit
+* quark
+* scrypt
+* scryptn
+* scryptjane
+* shavite3
+* skein
+* x11
+* x13
 
 ## Usage
 
@@ -45,31 +46,30 @@ sudo ln -s /usr/bin/nodejs /usr/bin/node
 npm install 2acoin-multi-hashing
 ```
 
-So far this native NodeJS addon can do the following hashing algorithms.
+Example use for native **NodeJS** addon. (See the complete list of supported algorithms above).
 
-```javascript
-var multiHashing = require('2acoin-multi-hashing')
-var Buffer = require('safe-buffer').Buffer
-
-var algorithms = ['quark', 'x11', 'scrypt', 'scryptn', 'scryptjane', 'keccak', 'bcrypt', 'skein', 'blake']
-
-var data = new Buffer('7000000001e980924e4e1109230383e66d62945ff8e749903bea4336755c00000000000051928aff1b4d72416173a8c3948159a09a73ac3bb556aa6bfbcad1a85da7f4c1d13350531e24031b939b9e2b', 'hex')
-
-var hashedData = algorithms.map(function (algo) {
-  if (algo === 'scryptjane') {
-        // scryptjane needs block.nTime and nChainStartTime (found in coin source)
-    var yaCoinChainStartTime = 1367991200
-    var nTime = Math.round(Date.now() / 1000)
-    return multiHashing[algo](data, nTime, yaCoinChainStartTime)
-  } else {
-    return multiHashing[algo](data)
-  }
-})
-
-console.log(hashedData)
-//<SlowBuffer 0b de 16 ef 2d 92 e4 35 65 c6 6c d8 92 d9 66 b4 3d 65 ..... >
-```
-
+    javascript
+    var multiHashing = require('2acoin-multi-hashing')
+    var Buffer = require('safe-buffer').Buffer
+    
+    var algorithms = ['quark', 'x11', 'scrypt', 'scryptn', 'scryptjane', 'keccak', 'bcrypt', 'skein', 'blake']
+    
+    var data = new Buffer('7000000001e980924e4e1109230383e66d62945ff8e749903bea4336755c00000000000051928aff1b4d72416173a8c3948159a09a73ac3bb556aa6bfbcad1a85da7f4c1d13350531e24031b939b9e2b', 'hex')
+    
+    var hashedData = algorithms.map(function (algo) {
+      if (algo === 'scryptjane') {
+         // scryptjane needs block.nTime and nChainStartTime (found in coin source)
+         var yaCoinChainStartTime = 1367991200
+         var nTime = Math.round(Date.now() / 1000)
+         return multiHashing[algo](data, nTime, yaCoinChainStartTime)
+      } else {
+         return multiHashing[algo](data)
+      }
+    })
+    
+    console.log(hashedData)
+    //<SlowBuffer 0b de 16 ef 2d 92 e4 35 65 c6 6c d8 92 d9 66 b4 3d 65 ..... >
+    
 
 ## Credits
 
